@@ -18,15 +18,15 @@ let withdraw amount account =
     if amount > account.Balance then account
     else { account with Balance = account.Balance - amount }
 
-let getDirectoryInfo dir =
-    if not (Directory.Exists(dir)) then
-        Directory.CreateDirectory(dir)
-    else    
-        DirectoryInfo(dir)
-
 let fileSystemAudit (account:Account) message =
-    let dir = getDirectoryInfo(@"c:\temp\learnfs\capstone2\" + account.Customer.Name)
-    File.WriteAllText((dir.FullName + @"\" + (account.Id.ToString()) + ".txt"), message)
+    let getDirectoryInfo dir =
+        if not (Directory.Exists(dir)) then
+            Directory.CreateDirectory(dir)
+        else    
+            DirectoryInfo(dir)
+
+    let dir = getDirectoryInfo(@"c:\temp\learnfs\capstone2\" + account.Customer.Name).FullName + @"\"
+    File.WriteAllText((dir + (account.Id.ToString()) + ".txt"), message)
 
 let console account message = 
     printf "Account %s: %s" (account.Id.ToString()) message

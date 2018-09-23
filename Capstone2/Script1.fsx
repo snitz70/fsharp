@@ -28,12 +28,28 @@ let getDirectoryInfo dir =
     else    
         DirectoryInfo(dir)
 
-let fileSystemAudit (account:Account) message =
+let fileSystemAudit message (account:Account) =
     let dir = getDirectoryInfo(@"c:\temp\learnfs\capstone2\" + account.Customer.Name)
     File.WriteAllText((dir.FullName + @"\" + (account.Id.ToString()) + ".txt"), message)
 
-let console account message = 
+let console message account = 
     printf "Account %s: %s" (account.Id.ToString()) message
+
+let auditAs operationName audit operation amount account =
+    account
+    |> operation amount
+    |> audit operationName
+
+
+let auditAsDepositFile amount account =
+    account
+    |> deposit amount
+    |> fileSystemAudit "testing"
+
+let withdrawWithConsoleAudit = auditAs console "withdraw" withdraw
+let depositWithConcoleAudit = auditAs console "deposit"  deposit
+
+
 
 
 deposit 10M brian
