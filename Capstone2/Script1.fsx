@@ -17,6 +17,25 @@ let withdraw amount account =
     
 let brian = { Id = Guid.NewGuid(); Balance = 100M; Customer = { Name = "Brian"}}
 
+open System.IO
+
+if not (Directory.Exists(@"c:\temp\learnfs\capstone2\" + "Brian")) then
+    Directory.CreateDirectory(@"c:\temp\learnfs\capstone2\" + "Brian") |> ignore
+
+let getDirectoryInfo dir =
+    if not (Directory.Exists(dir)) then
+        Directory.CreateDirectory(dir)
+    else    
+        DirectoryInfo(dir)
+
+let fileSystemAudit (account:Account) message =
+    let dir = getDirectoryInfo(@"c:\temp\learnfs\capstone2\" + account.Customer.Name)
+    File.WriteAllText((dir.FullName + @"\" + (account.Id.ToString()) + ".txt"), message)
+
+let console account message = 
+    printf "Account %s: %s" (account.Id.ToString()) message
+
+
 deposit 10M brian
 withdraw 90M brian
 
