@@ -3,7 +3,10 @@
 open System.IO
 open Domain
 
-let fileSystemAudit (account:Account) message =
+//let formatAuditMessage account message =
+//    sprintf "Account %s: Performed operation '%s'." (account.Id.ToString()) message
+
+let fileSystemAudit message (account:Account) =
     let getDirectoryInfo dir =
         if not (Directory.Exists(dir)) then
             Directory.CreateDirectory(dir)
@@ -12,6 +15,8 @@ let fileSystemAudit (account:Account) message =
 
     let dir = getDirectoryInfo(@"c:\temp\learnfs\capstone2\" + account.Customer.Name).FullName + @"\"
     File.WriteAllText((dir + (account.Id.ToString()) + ".txt"), message)
+    account
 
-let console account message = 
-    printf "Account %s: %s" (account.Id.ToString()) message
+let console message account = 
+    printf "Account: %s %s\n" (account.Id.ToString()) message 
+    account

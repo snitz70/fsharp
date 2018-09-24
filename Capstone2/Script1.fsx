@@ -59,4 +59,8 @@ withdraw 90M brian
 
 brian |> deposit 10M |> withdraw 90M
 
-withdrawWithConsoleAudit 10M brian
+brian 
+|> withdrawWithConsoleAudit 10M
+|> depositWithConcoleAudit 50M
+
+
